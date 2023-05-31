@@ -19,7 +19,7 @@ def load_response():
     with open('dataset-chatbot/dataset.json') as content:
         data = json.load(content)
     for intent in data['intents']:
-        responses[intent['tag']] = intent['responses']
+        responses[intent['tag']]=intent['responses']
 
 # import model dan download nltk file
 def preparation():
@@ -33,6 +33,13 @@ def preparation():
     nltk.download('wordnet', quiet=True)
     nltk.download('omw-1.4', quiet=True)
 
+# def lemmatization(text):
+#     word_list = nltk.word_tokenize(text)
+#     print(word_list)
+#     lemmatized_output = ' '.join([lemmatizer.lemmatize(w) for w in word_list])
+#     print(lemmatized_output)
+#     return lemmatized_output
+
 # hapus tanda baca
 def remove_punctuation(text):
     texts_p = []
@@ -45,7 +52,7 @@ def remove_punctuation(text):
 def vectorization(texts_p):
     vector = tokenizer.texts_to_sequences(texts_p)
     vector = np.array(vector).reshape(-1)
-    vector = pad_sequences([vector], maxlen=input_shape)
+    vector = pad_sequences([vector], input_shape)
     return vector
 
 # klasifikasi pertanyaan user
