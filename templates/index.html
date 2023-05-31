@@ -122,7 +122,7 @@
 
         <div class="col-sm-6">
           <!-- Deskripsi Aplikasi -->
-          <h4>SafeBot</h4>
+          <h4>Insighful Bot</h4>
           <p style="text-align: justify;text-justify: inter-word;">
             Aplikasi ini dibuat untuk menentukan membantu para muslimah menentukan model pakaian terbaik <i>Insighfull Muslim Bot</i>.
             Pengguna hanya cukup menginputkan pertanyaan kemudian Muslim Bot akan memberikan jawaban mengenai pertanyaan pengguna.
@@ -139,44 +139,6 @@
           </nav>
         </div>
       </div><br>
-    </div>
-
-    <!-- Bagian Halaman (Aplikasi phishing detection) -->
-    <div id="detection" data-bs-spy="scroll" data-bs-target="#navgo" data-bs-offset="0" class="scrollspy-example" class="container-fluid" tabindex="0">
-        <br>
-        <br>
-        <div class="row">
-            <h2 class="centered">Phishing Detection</h2>
-            <div class="col-sm-6">
-                </br>
-                <img style="margin-left: 100px;" src={{ url_for('static', filename='/images/image1.png') }} width="700" height="500"></img>
-            </div>
-            <div class="col-sm-6">
-                <br><br><br><br><br><br><br>
-                <!-- Input URL dari Pengguna -->
-                <div class="col-lg-6" style="margin-left: 50px;">
-    
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon3">Input URL</span>
-                        <input type="text" class="form-control" id="input_link" onInput="$('#inputVal_link').html($(this).val())" placeholder="example.com/users/" aria-label="https://example.com/users/" aria-describedby="basic-addon3">
-                    </div>  <br><br>               
-                    <button type="submit" id="prediksi_submit" class="btn btn-outline-secondary" style="background-color:#4e6e81; color: #fff">Predict</button>
-                    </br>
-                </div>
-                <!-- Bagian Halaman untuk Hasil Prediksi -->
-                <!-- <div id="hasil_prediksi" align="center">
-                        Hasil Prediksi akan ditampilkan di sini
-                </div> -->
-                <div id="hasil_prediksi" align="center">
-                  <h3 class="text-center">Hasil Prediksi</h2>
-                    {% if hasil_prediksi %}
-                    <p class="text-center">Link tersebut diprediksi <span class="fw-bold">{{hasil_prediksi}}</span></p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <br>
-        <br>
     </div>
 
     <!-- Bagian Halaman (Anggota Kelompok) -->
