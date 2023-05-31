@@ -46,7 +46,7 @@ def beranda():
 def chatbot():
     return render_template('chatbot.html')
 
- [Routing untuk Halaman Utama atau Home]	
+#[Routing untuk Halaman Utama atau Home]	
 @app.route("/")
 def beranda():
     return render_template('index.html')
