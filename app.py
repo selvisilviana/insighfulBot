@@ -1,54 +1,98 @@
-import json
-import random
-from flask import Flask, render_template, request, jsonify
+# =[Modules dan Packages]========================
+
+from flask import Flask,render_template,request,jsonify
 from flask_ngrok import run_with_ngrok
+import pandas as pd
+import numpy as np
+import re
+import pickle
+import nltk
+import joblib
+import pickle
+from joblib import load
 
-app = Flask(__name__, static_url_path='/static')
-run_with_ngrok(app)
+#import package untuk phishing detection
+from nltk.tokenize import RegexpTokenizer
+from nltk.stem.snowball import SnowballStemmer
+from sklearn.feature_extraction.text import CountVectorizer
 
-# Routing untuk Halaman Utama atau Home
+#import package untuk safebot
+from process import preparation, generate_response
+
+# download nltk
+preparation()
+
+# =[Variabel Global]=============================
+
+app   = Flask(__name__, static_url_path='/static')
+model = None
+
+# Text Pre-Processing function untuk API phishing detection
+def text_preprocessing_process(text):
+    tokens = tokenizer.tokenize(text)
+    tokens_stemmed = [stemmer.stem(token) for token in tokens]
+    processed_text = ' '.join(tokens_stemmed)
+    return processed_text
+
+# =[Routing]=====================================
+
+# [Routing untuk Halaman Utama atau Home]	
 @app.route("/")
 def beranda():
     return render_template('index.html')
 
-# Routing untuk Halaman Chatbot
+# [Routing untuk Halaman Utama atau Home]	
 @app.route("/chatbot")
 def chatbot():
     return render_template('chatbot.html')
 
-# Routing untuk API Deteksi
+# Routing for API phishing
 @app.route("/api/deteksi", methods=['POST'])
-def api_deteksi():
+def apiDeteksi():
+    prediction_input = ""
+    
     if request.method == 'POST':
-        # Lakukan pengolahan data dan prediksi
-        # ...
-        return jsonify({"prediksi": prediksi})
-
-# Fungsi untuk menghasilkan respons berdasarkan input pengguna
-def generate_response(user_input):
-    for i in range(len(patterns)):
-        if user_input in patterns[i]:
-            return random.choice(responses[i])
-    return "Maaf, saya tidak mengerti."
-
-# Routing untuk mendapatkan respons chatbot
+        prediction_input = request.form['data']
+        
+        # Text Pre-Processing
+        prediction_input = text_preprocessing_process(prediction_input)
+        
+        # Vectorization
+        feature = cv.transform([prediction_input])
+        
+        # Prediction (Web Phishing or Web Aman)
+        prediction = model.predict(feature)
+        
+        if prediction == 0:
+            hasil_prediksi = "Web Phishing"
+        else:
+            hasil_prediksi = "Web Aman"
+        
+        # Return the prediction result in JSON format
+        return jsonify({
+            "data": hasil_prediksi,
+        })
+    
+# Routing for API response chatbot
 @app.route("/get")
-def get_bot_responses():
+def get_bot_response():
     user_input = str(request.args.get('msg'))
     result = generate_response(user_input)
     return result
 
-# Membaca dataset dari file JSON
-with open('static/dataset.json') as file:
-    dataset = json.load(file)
-
-# Mendapatkan tag, pola, dan respons dari dataset
-tag = dataset['tag']
-patterns = dataset['patterns']
-responses = dataset['responses']
-
-# Fungsi-fungsi lainnya di dalam aplikasi Flask
-# ...
+# =[Main]========================================
 
 if __name__ == '__main__':
-    app.run()
+        
+    #Setup Phishing
+	tokenizer = RegexpTokenizer(r'[A-Za-z]+')
+	stemmer = SnowballStemmer("english")
+   	
+	cv = CountVectorizer(vocabulary=pickle.load(open('feature.pickle', 'rb')))
+	
+	# Load model phishing yang telah ditraining
+	model = load('model_phishing_lr.model')
+
+	# Run Flask di Google Colab menggunakan ngrok
+	run_with_ngrok(app)
+	app.run()
